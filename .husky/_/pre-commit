@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/husky.sh"
+
+
+echo 'Prepare to check code style';
+
+# Check Prettier standards
+yarn run format ||
+(
+  yarn run format:fix
+)
+
+# Check ESLint Standards
+yarn run lint:es ||
+(
+  echo 'ESLint Check Failed. Please check & fix your code.'
+  false; 
+)
+
+# Check tsconfig standards
+yarn run lint:ts ||
+(
+  echo 'TSLint Check Failed. Please check & fix your code.'
+  false;
+)
+
+# If everything passes... Now we can commit
+echo '\n\n';
+echo 'Nice... Your code has been commit.'
